@@ -51,6 +51,7 @@ common_src_files := \
 
 extra_src_files := \
 	Xwarp.cpp \
+	VoldUtil.c \
 	fstrim.c \
 
 common_c_includes := \
@@ -58,8 +59,7 @@ common_c_includes := \
 	system/extras/ext4_utils \
 	external/openssl/include \
 	external/e2fsprogs/lib \
-	system/core/fs_mgr/include \
-	system/core/logwrapper/include
+	external/scrypt/lib/crypto
 
 common_libraries := \
 	libsysutils \
@@ -71,7 +71,13 @@ common_libraries := \
 
 common_static_libraries := \
 	libfs_mgr \
-	libpower
+	libpower \
+	libhardware_legacy \
+	liblogwrap \
+	libext4_utils \
+	libcrypto \
+	libscrypt_static \
+	libmincrypt
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := libvold
@@ -79,6 +85,9 @@ LOCAL_SRC_FILES := $(common_src_files) $(extra_src_files)
 LOCAL_C_INCLUDES := $(common_c_includes)
 LOCAL_SHARED_LIBRARIES := $(common_libraries) libcrypto
 LOCAL_CFLAGS := $(common_cflags)
+
+LOCAL_STATIC_LIBRARIES := $(common_static_libraries)
+
 LOCAL_MODULE_TAGS := eng tests
 include $(BUILD_STATIC_LIBRARY)
 
@@ -89,6 +98,7 @@ LOCAL_C_INCLUDES := $(common_c_includes)
 LOCAL_CFLAGS := $(common_cflags)
 LOCAL_SHARED_LIBRARIES := $(common_libraries) libcrypto
 LOCAL_STATIC_LIBRARIES := libvold $(common_static_libraries)
+
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
